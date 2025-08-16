@@ -50,11 +50,18 @@ struct SensorReading {
     float runin_status;
     String device_id;
     
+    // データ品質フラグ
+    bool has_co2_data;
+    bool has_iaq_data;
+    bool has_voc_data;
+    bool is_calibrated;  // runin_status >= 75%
+    
     // デフォルト値付きコンストラクタ
     SensorReading() : 
         timestamp(0), temperature(0), humidity(0), pressure(0),
         co2_equivalent(0), iaq(0), voc_equivalent(0), gas_resistance(0),
-        stabilized(false), runin_status(0), device_id("M5Stack_001") {}
+        stabilized(false), runin_status(0), device_id("M5Stack_001"),
+        has_co2_data(false), has_iaq_data(false), has_voc_data(false), is_calibrated(false) {}
 };
 
 // システムステータス構造体

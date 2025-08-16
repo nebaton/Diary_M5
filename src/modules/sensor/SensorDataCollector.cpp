@@ -189,6 +189,11 @@ void SensorDataCollector::processBsecData(const bme68xData data, const bsecOutpu
 }
 
 void SensorDataCollector::updateCurrentReading(const bsecOutputs& outputs) {
+    // データ品質フラグをリセット
+    currentReading.has_co2_data = false;
+    currentReading.has_iaq_data = false;
+    currentReading.has_voc_data = false;
+    
     for (uint8_t i = 0; i < outputs.nOutputs; i++) {
         const bsecData output = outputs.output[i];
         
@@ -204,12 +209,15 @@ void SensorDataCollector::updateCurrentReading(const bsecOutputs& outputs) {
                 break;
             case BSEC_OUTPUT_CO2_EQUIVALENT:
                 currentReading.co2_equivalent = output.signal;
+                currentReading.has_co2_data = true;
                 break;
             case BSEC_OUTPUT_IAQ:
                 currentReading.iaq = output.signal;
+                currentReading.has_iaq_data = true;
                 break;
             case BSEC_OUTPUT_BREATH_VOC_EQUIVALENT:
                 currentReading.voc_equivalent = output.signal;
+                currentReading.has_voc_data = true;
                 break;
             case BSEC_OUTPUT_RAW_GAS:
                 currentReading.gas_resistance = output.signal;
@@ -219,6 +227,7 @@ void SensorDataCollector::updateCurrentReading(const bsecOutputs& outputs) {
                 break;
             case BSEC_OUTPUT_RUN_IN_STATUS:
                 currentReading.runin_status = output.signal;
+                currentReading.is_calibrated = (output.signal >= 75.0f);
                 break;
         }
     }
