@@ -269,15 +269,19 @@ void setup() {
   }
 
   envSensor.attachCallback(newDataCallback);
+  clearScreen();
   lcdPrint(10, "BSEC準備完了!", GREEN);
   
   // 初期画面表示
   delay(2000);
   clearScreen();
-  lcdPrint(50, "BME688 センサー", CYAN);
-  lcdPrint(80, "データ取得中...", WHITE);
-  lcdPrint(110, "画面右側タッチで", GREEN);
-  lcdPrint(130, "ページ切り替え", GREEN);
+    // 320×240画面に最適化した表示（見やすい行間に戻す）
+  int y = 50;  // 上部マージン
+  int lineHeight = 30;  // 見やすい行間
+  lcdPrint(y, "BME688 センサー", CYAN);
+  lcdPrint(y+=lineHeight, "データ取得中...", WHITE);
+  lcdPrint(y+=lineHeight, "画面右側タッチで", GREEN);
+  lcdPrint(y+=lineHeight, "ページ切り替え", GREEN);
 }
 
 void loop() {
